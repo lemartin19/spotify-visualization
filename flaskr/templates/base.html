@@ -17,6 +17,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+    <script src="https://cdn.rawgit.com/chartjs/chartjs-plugin-annotation/master/chartjs-plugin-annotation.min.js"></script>
   </head>
 
   <body>
@@ -35,14 +36,19 @@
             <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Login <i class="fas fa-user"></i></button>
           </form>
         {% endif %}
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            <li class="nav-item"><a class="nav-link disabled">{{ messages[0] }}</a></li>
-          {% endif %}
-        {% endwith %}
         </ul>
       </div>
     </nav>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-danger" role="alert">
+        Error: {{ message }}
+      </div>
+      {% endfor %}
+    {% endif %}
+    {% endwith %}
 
     {% block content %}{% endblock %}
 
