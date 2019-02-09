@@ -26,11 +26,18 @@ def create_app(test_config=None):
         pass
 
     # home screen
-    @app.route('/')
+    @app.route('/', methods=['GET','POST'])
     def home():
-        # if logged in
-        if session.get('display_name'):
+        if request.method == 'POST':
+            print("POST")
+            # request.args.get()
+            # get the argument to search for
+            # call spotify api on search
+            # search and redirect to the new page
+        if 'display_name' in session:
+            print("display name")
             return render_template('index.html', name=session['display_name'])
+        print('session: %s' % session)
         return render_template('index.html')
 
 
