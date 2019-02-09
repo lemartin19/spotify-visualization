@@ -12,3 +12,15 @@ canvas {
 .top-buffer {
   margin-top:2rem;
 }
+
+h1 {
+  color: #FDFEFF;
+}
+
+h2 {
+  color: #FDFEFF;
+}
+
+.bg-dark {
+  background: #191616 !important;
+}
