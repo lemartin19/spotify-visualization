@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<form action="{{ url_for('home') }}">
+  <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search again</button>
+</form>
 
 <div class="container-fluid">
   <h2 class="display-2 text-success">{{track.name}}</h2>
@@ -15,6 +18,7 @@
     <h4 style="color: #f8f8f8">Key: <small>{{keys[features.key + 1]}}</small></h4>
     <h4 style="color: #f8f8f8">Mode: <small>{% if features.mode %}Major{% else %}Minor{% endif %}</small></h4>
     <h4 style="color: #f8f8f8">Meter: <small>{{features.time_signature}}</small></h4>
+    <h4 style="color: #f8f8f8">Tempo: <small>{{features.tempo}}</small></h4>
   </div>
 
   <div class="chartjs-size-monitor">
@@ -22,6 +26,7 @@
   </div>
 </div>
 
+<!-- Feature graph --!>
 <script>
   var color = Chart.helpers.color;
   var config = {
@@ -32,7 +37,9 @@
                'Acousticness',
                'Instrumentalness',
                'Liveness',
-               'Loudness'],
+               'Loudness',
+               'Valence',
+               'Speechiness'],
   	  datasets: [{
   			backgroundColor: '#1DB95488',
   			borderColor: '#1DB954',
@@ -41,7 +48,9 @@
                {{features.acousticness}},
                {{features.instrumentalness}},
                {{features.liveness}},
-               {{features.loudness / -60}}]
+               {{features.loudness / -60}},
+               {{features.valence}},
+               {{features.speechiness}}]
   		}]
   	},
   	options: {
