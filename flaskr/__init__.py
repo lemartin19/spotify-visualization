@@ -1,7 +1,7 @@
 import os
 import requests
 import spotipy
-
+import json
 from flask import Flask, render_template, request, session
 
 
@@ -38,11 +38,13 @@ def create_app(test_config=None):
     # search results screen
     @app.route('/search_results')
     def search_results():
-        spotify = spotipy.Spotify()
-        search = spotify.search(request.args.get("search_query"))
-        print(search)
-        return render_template('search_results.html')
-
+        if 'display_name' in session and 'token' in session:
+            spotify = spotipy.Spotify(auth=session['token'])
+            results = spotify.search(request.args.get('search_query'))
+            tracks = results['tracks']['items']
+            return render_template('search_results.html', name=session['display_name'], tracks=tracks)
+        else:
+            return render_template('index.html')
 
     from . import auth
     app.register_blueprint(auth.bp)

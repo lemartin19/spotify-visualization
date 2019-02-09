@@ -4,7 +4,20 @@
 
 <div class="container-fluid">
   <div class="mx-auto center w-50">
-    <h1 class="display-1 text-success">Search Results</h1>
+    <h1 class="">Search Results</h1>
+    <div class="row">
+      {% for track in tracks %}
+      <div class="col-sm">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{track['name']}}</h5>
+            <p class="card-text">{{track['artists'][0]['name']}} - {{track['album']['name']}}</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
   </div>
 </div>
 
