@@ -1,4 +1,4 @@
-import base64
+from base64 import b64encode
 import functools
 import requests
 from configparser import ConfigParser
@@ -44,7 +44,9 @@ def callback():
     '''
     auth_token = request.args['code']
 
-    if exchange_tokens("authorization_code", auth_token):
+    ex = exchange_tokens("authorization_code", auth_token)
+    print("ex: %s" % ex)
+    if ex:
         authorization_header = {'Authorization':'Bearer %s' % session['token']}
         profile_response = requests.get('https://api.spotify.com/v1/me', headers=authorization_header)
         session['display_name'] = profile_response.json()['display_name']
@@ -84,16 +86,17 @@ def exchange_tokens(grant_type, code):
              code       <string> - authorization code or refresh token
     : RETURN <boolean> - successful exchange
     '''
-    print("EXCHANGING TOKENS")
     code_payload = {
         "grant_type": grant_type,
         "code": str(code),
         "redirect_uri": REDIRECT_URI
     }
-    base64encoded = base64.b64encode(bytes('%s:%s' % (CLIENT_ID, CLIENT_SECRET), 'utf-8'))
-    headers = {"Authorization": "Basic %s" % base64encoded}
+    client_info = '%s:%s' % (CLIENT_ID, CLIENT_SECRET)
+    base64encoded = b64encode(client_info.encode('utf-8'))
+    headers = {"Authorization": "Basic %s" % base64encoded.decode('ascii')}
     post_request = requests.post("https://accounts.spotify.com/api/token", data=code_payload, headers=headers)
 
+    print("post_request: %s" % post_request.json())
     if post_request.status_code == 200:
         response_data = post_request.json()
         session.clear()
