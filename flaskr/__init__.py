@@ -49,4 +49,7 @@ def create_app(test_config=None):
     from . import auth
     app.register_blueprint(auth.bp)
 
+    from . import song
+    app.register_blueprint(song.bp)
+
     return app

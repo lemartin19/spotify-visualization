@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+  <h2 class="display-2 text-success">{{track.name}}</h2>
+  <h3 class="display-4 text-muted">{{track.album.name}}
+    {% for artist in track.album.artists %}
+    <small>{{artist.name}}</small>{% if not loop.last %}, {% endif %}
+    {% endfor %}
+  </h3>
+
+</div>
+
+{% endblock %}

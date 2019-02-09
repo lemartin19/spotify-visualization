@@ -14,7 +14,7 @@
             <p class="card-text">{{track['artists'][0]['name']}} - {{track['album']['name']}}</p>
           </div>
           <div class="card-footer">
-            <a href="{{url_for('song', song_id=track['id'])}}" class="btn btn-primary">Aesthetify</a>
+            <a href="{{url_for('song.song', id=track['id'])}}" class="btn btn-primary">Aesthetify</a>
           </div>
         </div>
       </div>
