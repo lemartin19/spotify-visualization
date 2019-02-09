@@ -10,6 +10,52 @@
     {% endfor %}
   </h3>
 
+  <div class="chartjs-size-monitor">
+    <canvas id="features" class="chartjs-render-monitor"></canvas>
+  </div>
 </div>
+
+<script>
+  var color = Chart.helpers.color;
+  var config = {
+  	type: 'radar',
+  	data: {
+  	  labels: ['Danceability',
+               'Energy',
+               'Acousticness',
+               'Instrumentalness',
+               'Liveness',
+               'Loudness'],
+  	  datasets: [{
+  			backgroundColor: '#1DB95488',
+  			borderColor: '#1DB954',
+  			data: [{{features.danceability}},
+               {{features.energy}},
+               {{features.acousticness}},
+               {{features.instrumentalness}},
+               {{features.liveness}},
+               {{features.loudness / -60}}]
+  		}]
+  	},
+  	options: {
+  		legend: {display: false},
+  		title: {display: false},
+  		scale: {
+        gridLines: {display: true,
+                    color: '#444444'},
+  			ticks: {beginAtZero: true,
+                fontSize: 18,
+                color: '#888888',
+                showLabelBackdrop: false},
+        pointLabels: {fontSize: 22,
+                      fontColor: '#aaaaaa'}},
+
+  	}
+  };
+
+  window.onload = function() {
+  	window.myRadar = new Chart(document.getElementById('features'), config);
+  };
+</script>
 
 {% endblock %}

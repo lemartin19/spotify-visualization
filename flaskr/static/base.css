@@ -5,6 +5,10 @@ body {
   padding-top: 5rem;
 }
 
+canvas {
+  height: .2vh;
+}
+
 .top-buffer {
   margin-top:2rem;
 }

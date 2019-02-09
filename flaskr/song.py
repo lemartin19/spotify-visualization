@@ -14,4 +14,4 @@ def song():
     track = sp.track(id)
 
     return render_template('song.html', name=session['display_name'], track=track,
-     features=features, analysis=analysis)
+      features=features[0], analysis=analysis)
