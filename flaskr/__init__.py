@@ -1,5 +1,6 @@
 import os
 import requests
+import spotipy
 
 from flask import Flask, render_template, request, session
 
@@ -26,19 +27,21 @@ def create_app(test_config=None):
         pass
 
     # home screen
-    @app.route('/', methods=['GET','POST'])
+    @app.route('/')
     def home():
-        if request.method == 'POST':
-            print("POST")
-            # request.args.get()
-            # get the argument to search for
-            # call spotify api on search
-            # search and redirect to the new page
         if 'display_name' in session:
             print("display name")
             return render_template('index.html', name=session['display_name'])
         print('session: %s' % session)
         return render_template('index.html')
+
+    # search results screen
+    @app.route('/search_results')
+    def search_results():
+        spotify = spotipy.Spotify()
+        search = spotify.search(request.args.get("search_query"))
+        print(search)
+        return render_template('search_results.html')
 
 
     from . import auth
