@@ -1,6 +1,5 @@
 /venv/
 *.cfg
-*.pyc
 
 *.pyc
 __pycache__/
