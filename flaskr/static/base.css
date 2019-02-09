@@ -2,5 +2,9 @@ body {
   display: block;
   background: #191414;
   color: #1DB954;
-  padding-top: 65px;
+  padding-top: 5rem;
+}
+
+.top-buffer {
+  margin-top:2rem;
 }

@@ -7,12 +7,14 @@
     <h1 class="">Search Results</h1>
     <div class="row">
       {% for track in tracks %}
-      <div class="col-sm">
-        <div class="card">
+      <div class="col-md-6 card-deck">
+        <div class="card top-buffer">
           <div class="card-body">
             <h5 class="card-title">{{track['name']}}</h5>
             <p class="card-text">{{track['artists'][0]['name']}} - {{track['album']['name']}}</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+          <div class="card-footer">
+            <a href="{{url_for('song', song_id=track['id'])}}" class="btn btn-primary">Aesthetify</a>
           </div>
         </div>
       </div>
