@@ -30,8 +30,8 @@
   </div>
 </div>
 
-<!-- Audio Analysis graph -->
 <script>
+  // Audio analysis
 	var line_config = {
 		type: 'line',
 		data: {
@@ -67,15 +67,6 @@
 			}]
 		},
 		options: {
-			responsive: true,
-			tooltips: {
-				mode: 'index',
-				intersect: false,
-			},
-			hover: {
-				mode: 'nearest',
-				intersect: true
-			},
 			scales: {
 				xAxes: [{
 					display: true,
@@ -94,13 +85,7 @@
 		}
 	};
 
-	window.onload = function() {
-    var ctx = new Chart(document.getElementById("myChart").getContext("2d")).Line(data);
-	};
-</script>
-
-<!-- Feature graph -->
-<script>
+  // Feature graph
   var color = Chart.helpers.color;
   var radar_config = {
   	type: 'radar',
@@ -127,6 +112,15 @@
   		}]
   	},
   	options: {
+      responsive: true,
+      tooltips: {
+        mode: 'index',
+        intersect: false
+      },
+      hover: {
+        mode: 'nearest',
+        intersect: true
+      },
   		legend: {display: false},
   		title: {display: false},
   		scale: {
@@ -143,7 +137,8 @@
   };
 
   window.onload = function() {
-  	window.myRadar = new Chart(document.getElementById('features'), radar_config);
+    var line_chart = new Chart(document.getElementById('analysis').getContext('2d'), line_config);
+  	var radar_char = new Chart(document.getElementById('features'), radar_config);
   };
 </script>
 
