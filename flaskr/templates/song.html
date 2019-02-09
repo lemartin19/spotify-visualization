@@ -22,14 +22,87 @@
   </div>
 
   <div class="chartjs-size-monitor">
+    <canvas id="analysis" class="chartjs-render-monitor"></canvas>
+  </div>
+
+  <div class="chartjs-size-monitor">
     <canvas id="features" class="chartjs-render-monitor"></canvas>
   </div>
 </div>
 
-<!-- Feature graph --!>
+<!-- Audio Analysis graph -->
+<script>
+	var line_config = {
+		type: 'line',
+		data: {
+      labels: [
+        {% for section in analysis.sections %}
+        {{section.start + section.duration / 2}}{% if not loop.last %}, {% endif %}
+        {% endfor %}
+      ],
+			datasets: [{
+        label: 'Loudness',
+				backgroundColor: '#007bff88',
+				borderColor: '#007bff',
+				data: [
+          {% with loudness_min = analysis.sections|map(attribute='loudness')|min %}
+          {% for section in analysis.sections %}
+          {{section.loudness / loudness_min}}{% if not loop.last %}, {% endif %}
+          {% endfor %}
+          {% endwith %}
+				],
+				fill: false,
+			}, {
+        label: 'Tempo',
+				backgroundColor: '#ffff3388',
+				borderColor: '#ffff33',
+				data: [
+          {% with tempo_max = analysis.sections|map(attribute='tempo')|max %}
+          {% for section in analysis.sections %}
+          {{section.tempo / tempo_max }}{% if not loop.last %}, {% endif %}
+          {% endfor %}
+          {% endwith %}
+				],
+				fill: false,
+			}]
+		},
+		options: {
+			responsive: true,
+			tooltips: {
+				mode: 'index',
+				intersect: false,
+			},
+			hover: {
+				mode: 'nearest',
+				intersect: true
+			},
+			scales: {
+				xAxes: [{
+					display: true,
+					scaleLabel: {
+            display: true,
+            labelString: 'Time'}
+				}],
+				yAxes: [{
+					display: true,
+					scaleLabel: {
+						display: true,
+						labelString: 'Value'
+					}
+				}]
+			}
+		}
+	};
+
+	window.onload = function() {
+    var ctx = new Chart(document.getElementById("myChart").getContext("2d")).Line(data);
+	};
+</script>
+
+<!-- Feature graph -->
 <script>
   var color = Chart.helpers.color;
-  var config = {
+  var radar_config = {
   	type: 'radar',
   	data: {
   	  labels: ['Danceability',
@@ -70,7 +143,7 @@
   };
 
   window.onload = function() {
-  	window.myRadar = new Chart(document.getElementById('features'), config);
+  	window.myRadar = new Chart(document.getElementById('features'), radar_config);
   };
 </script>
 
