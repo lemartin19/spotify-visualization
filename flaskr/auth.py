@@ -31,11 +31,11 @@ def login():
         "client_id": CLIENT_ID
     }
 
-    url_args = "&".join(["%s=%s" % (key, quote(val)) for key,val in auth_query_parameters.iteritems()])
+    url_args = "&".join(["%s=%s" % (key, quote(val)) for key,val in auth_query_parameters.items()])
     auth_url = "%s/?%s" % ("https://accounts.spotify.com/authorize", url_args)
     return redirect(auth_url)
 
-@bp.route('/callback')
+@bp.route('/callback/')
 def callback():
     '''
     : Redirect user after login
@@ -90,7 +90,7 @@ def exchange_tokens(grant_type, code):
         "code": str(code),
         "redirect_uri": REDIRECT_URI
     }
-    base64encoded = base64.b64encode("%s:%s" % (CLIENT_ID, CLIENT_SECRET))
+    base64encoded = base64.b64encode(bytes('%s:%s' % (CLIENT_ID, CLIENT_SECRET), 'utf-8'))
     headers = {"Authorization": "Basic %s" % base64encoded}
     post_request = requests.post("https://accounts.spotify.com/api/token", data=code_payload, headers=headers)
 
