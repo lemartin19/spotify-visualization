@@ -15,7 +15,7 @@
   </h3>
   <div>
     {% set keys = ['No key', 'C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'G#', 'A', 'Bb', 'B'] %}
-    <div class="row justify-content-md-center">
+    <div class="row text-center">
       <div class="col-4">
         <h4 style="color: #f8f8f8">Key: <small>{{keys[features.key + 1]}} {% if features.mode %}Major{% else %}Minor{% endif %}</small></h4>
       </div>
@@ -42,7 +42,6 @@
     labels: [
       {% for section in analysis.sections %}
         {{section.start}},
-        {% if loop.last %}{{section.start + section.duration}}{% endif %}
       {% endfor %}
     ],
     datasets: [{
@@ -109,13 +108,13 @@
   	  datasets: [{
   			backgroundColor: '#1DB95488',
   			borderColor: '#1DB954',
-  			data: [{{features.danceability}},
-               {{features.energy}},
-               {{features.acousticness}},
-               {{features.instrumentalness}},
-               {{features.liveness}},
-               {{features.valence}},
-               {{features.speechiness}}]
+  			data: [{{features.danceability * 100}},
+               {{features.energy * 100}},
+               {{features.acousticness * 100}},
+               {{features.instrumentalness * 100}},
+               {{features.liveness * 100}},
+               {{features.valence * 100}},
+               {{features.speechiness * 100}}]
   		}]
   	},
   	options: {
@@ -134,7 +133,7 @@
         gridLines: {display: true,
                     color: '#444444'},
   			ticks: {beginAtZero: true,
-                max: 1.0,
+                max: 100.0,
                 fontSize: 18,
                 color: '#888888',
                 showLabelBackdrop: false},
