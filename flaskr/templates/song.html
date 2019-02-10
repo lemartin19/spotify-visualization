@@ -31,41 +31,44 @@
 </div>
 
 <script>
-  // Audio analysis
-	var line_config = {
-		type: 'line',
-		data: {
-      labels: [
+  var line_data = {
+    labels: [
+      {% for section in analysis.sections %}
+        {{section.start}},
+        {% if loop.last %}{{section.start + section.duration}}{% endif %}
+      {% endfor %}
+    ],
+    datasets: [{
+      label: 'Loudness',
+      backgroundColor: '#007bff88',
+      borderColor: '#007bff',
+      data: [
+        {% with loudness_max = analysis.sections|map(attribute='loudness')|max %}
         {% for section in analysis.sections %}
-        {{section.start + section.duration / 2}}{% if not loop.last %}, {% endif %}
+          {{loudness_max / section.loudness}}{% if not loop.last %}, {% endif %}
         {% endfor %}
+        {% endwith %}
       ],
-			datasets: [{
-        label: 'Loudness',
-				backgroundColor: '#007bff88',
-				borderColor: '#007bff',
-				data: [
-          {% with loudness_min = analysis.sections|map(attribute='loudness')|min %}
-          {% for section in analysis.sections %}
-          {{section.loudness / loudness_min}}{% if not loop.last %}, {% endif %}
-          {% endfor %}
-          {% endwith %}
-				],
-				fill: false,
-			}, {
-        label: 'Tempo',
-				backgroundColor: '#ffff3388',
-				borderColor: '#ffff33',
-				data: [
-          {% with tempo_max = analysis.sections|map(attribute='tempo')|max %}
-          {% for section in analysis.sections %}
-          {{section.tempo / tempo_max }}{% if not loop.last %}, {% endif %}
-          {% endfor %}
-          {% endwith %}
-				],
-				fill: false,
-			}]
-		},
+      fill: false,
+      yAxisID: 'y-axis-0'
+    }, {
+      label: 'Tempo',
+      backgroundColor: '#ffff3388',
+      borderColor: '#ffff33',
+      data: [
+        {% with tempo_max = analysis.sections|map(attribute='tempo')|max %}
+        {% for section in analysis.sections %}
+        {{section.tempo / tempo_max }}{% if not loop.last %}, {% endif %}
+        {% endfor %}
+        {% endwith %}
+      ],
+      fill: false,
+    }]
+  };
+
+  var line_config = {
+		type: 'line',
+		data: line_data,
 		options: {
 			scales: {
 				xAxes: [{
@@ -82,11 +85,10 @@
 					}
 				}]
 			}
-		}
+    }
 	};
 
   // Feature graph
-  var color = Chart.helpers.color;
   var radar_config = {
   	type: 'radar',
   	data: {
@@ -137,8 +139,8 @@
   };
 
   window.onload = function() {
-    var line_chart = new Chart(document.getElementById('analysis').getContext('2d'), line_config);
-  	var radar_char = new Chart(document.getElementById('features'), radar_config);
+    window.myAnalysis = new Chart(document.getElementById('analysis').getContext('2d'), line_config);
+  	window.myFeatures = new Chart(document.getElementById('features'), radar_config);
   };
 </script>
 
