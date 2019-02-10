@@ -8,7 +8,6 @@ from requests.exceptions import SSLError
 bp = Blueprint('song', __name__, url_prefix='/')
 
 @bp.route('/song', methods=['GET'])
-@login_required
 def song():
     sp = spotipy.Spotify(auth=session['token'])
     id = request.args.get('id')

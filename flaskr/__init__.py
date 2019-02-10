@@ -36,7 +36,6 @@ def create_app(test_config=None):
 
     # search results screen
     @app.route('/search_results')
-    @login_required
     def search_results():
         if 'display_name' in session and 'token' in session:
             spotify = spotipy.Spotify(auth=session['token'])
