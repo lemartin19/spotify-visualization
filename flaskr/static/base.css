@@ -5,8 +5,11 @@ body {
   padding-top: 5rem;
 }
 
-canvas {
-  height: .2vh;
+.chartjs-size-monitor {
+  position: relative;
+  margin: auto;
+  height: 60vh;
+  width: 60vw;
 }
 
 .top-buffer {
