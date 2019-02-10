@@ -1,18 +1,18 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form action="{{ url_for('home') }}">
-  <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search again</button>
+<form class="pl-3" action="{{ url_for('home') }}">
+  <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search again</button>
 </form>
 
 <div class="container-fluid">
-  <h2 class="display-2 text-success">{{track.name}}</h2>
-  <h3 class="display-4 text-muted">{{track.album.name}}
-    {% for artist in track.album.artists %}
-    <small>{{artist.name}}</small>{% if not loop.last %}, {% endif %}
-    {% endfor %}
+  <h2 class="display-2 text-center">{{track.name}}</h2>
+  <h3 class="display-4 text-muted text-center">
+  {% for artist in track.album.artists %}
+  <small>{{artist.name}}</small>{% if not loop.last %}, {% endif %}
+  {% endfor %}
+  <small>- {{track.album.name}}</small>
   </h3>
-
   <div>
     {% set keys = ['No key', 'C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'G#', 'A', 'Bb', 'B'] %}
     <h4 style="color: #f8f8f8">Key: <small>{{keys[features.key + 1]}}</small></h4>

@@ -1,4 +1,5 @@
 import  spotipy
+from flaskr.auth import login_required
 from flask import (
     Blueprint, redirect, render_template, request, session, url_for, flash
 )
@@ -7,6 +8,7 @@ from requests.exceptions import SSLError
 bp = Blueprint('song', __name__, url_prefix='/')
 
 @bp.route('/song', methods=['GET'])
+@login_required
 def song():
     sp = spotipy.Spotify(auth=session['token'])
     id = request.args.get('id')

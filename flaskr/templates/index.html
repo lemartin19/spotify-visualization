@@ -4,12 +4,17 @@
 
 <div class="container-fluid">
   <div class="mx-auto center w-50">
-    <h1 class="display-1">Aesthetify</h1>
+    {% if name %}
+    <h1 class="display-1">find a song to aesthetify</h1>
     <form action="/search_results">
       <div class="form-group">
-        <input type="text" class="form-control" name="search_query" placeholder="Search for a song to aesthetify">
+        <input type="text" class="form-control" name="search_query" placeholder="search">
       </div>
     </form>
+    {% else %}
+    <h2 class="display-2">aesthetify your music library</h2>
+    <h3 class="display-3">log in with Spotify to get started</h3>
+    {% endif %}
   </div>
 </div>
 
