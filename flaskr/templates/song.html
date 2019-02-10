@@ -44,7 +44,7 @@
   var line_data = {
     labels: [
       {% for section in analysis.sections %}
-        {{section.start}},
+        {{section.start|round(0, 'floor')}}, 
       {% endfor %}
     ],
     datasets: [{
@@ -81,6 +81,7 @@
 		options: {
 			scales: {
 				xAxes: [{
+          type: 'category',
 					display: true,
 					scaleLabel: {
             display: true,
