@@ -45,7 +45,8 @@ def callback():
             cu = sp.current_user()
             session['display_name'] = cu['display_name']
         except SSLError as e:
-            flash("Connection error")
+            # flash("Connection error")
+            return redirect(url_for('home'))
     else:
         flash("Cannot get access token")
     return redirect(url_for('home'))
@@ -73,7 +74,8 @@ def login_required(view):
                 cu = sp.current_user()
                 session['display_name'] = cu['display_name']
             except SSLError:
-                flash("Connection error - please try again.")
+                # flash("Connection error - please try again.")
+                return redirect(url_for('home'))
             return view(**kwargs)
         else:
             return redirect(url_for('home'))

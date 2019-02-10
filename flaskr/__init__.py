@@ -45,7 +45,7 @@ def create_app(test_config=None):
                 tracks = results['tracks']['items']
                 return render_template('search_results.html', name=session['display_name'], tracks=tracks)
             except SSLError as err:
-                flash("Connection error")
+                # flash("Connection error")
                 return redirect(url_for('search_results', search_query=query))
         else:
             return redirect(url_for('home'))

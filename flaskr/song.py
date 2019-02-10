@@ -18,5 +18,5 @@ def song():
         return render_template('song.html', name=session['display_name'], track=track,
             features=features[0], analysis=analysis)
     except SSLError as err:
-        flash("Connection error")
+        # flash("Connection error")
         return redirect(url_for('song.song', id=id))
