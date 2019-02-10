@@ -3,6 +3,7 @@ from configparser import ConfigParser
 from flask import (
     Blueprint, flash, redirect, render_template, request, session, url_for, app
 )
+from requests.exceptions import SSLError
 import spotipy
 from spotipy import oauth2
 
@@ -38,8 +39,11 @@ def callback():
     if token:
         session['token'] = token['access_token']
         sp = spotipy.Spotify(auth=session['token'])
-        cu = sp.current_user()
-        session['display_name'] = cu['display_name']
+        try:
+            cu = sp.current_user()
+            session['display_name'] = cu['display_name']
+        except SSLError as e:
+            flash("Connection error")
     else:
         flash("Cannot get access token")
     return redirect(url_for('home'))
