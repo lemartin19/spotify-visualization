@@ -55,8 +55,8 @@
         label: 'Loudness',
         xAxisID: 'x-axis-0',
         yAxisID: 'y-axis-0',
-        backgroundColor: '#007bff88',
-        borderColor: '#007bff',
+        backgroundColor: '#19D7A588',
+        borderColor: '#19D7A5',
         data: [
           {% with loudness_max = analysis.sections|map(attribute='loudness')|max %}
           {% for section in analysis.sections %}
@@ -70,8 +70,8 @@
         label: 'Tempo',
         xAxisID: 'x-axis-0',
         yAxisID: 'y-axis-0',
-        backgroundColor: '#ffff3388',
-        borderColor: '#ffff33',
+        backgroundColor: '#CAF78688',
+        borderColor: '#CAF786',
         data: [
           {% with tempo_max = analysis.sections|map(attribute='tempo')|max %}
           {% for section in analysis.sections %}
@@ -83,9 +83,8 @@
       }, {
         type: 'line',
         label: 'Key',
-        backgroundColor: '#1DB95488',
-        borderColor: '#1DB954',
-        borderWidth: 8,
+        backgroundColor: '#C498FF88',
+        borderColor: '#C498FF',
         xAxisID: 'x-axis-0',
         yAxisID: 'y-axis-1',
         data: [
@@ -110,7 +109,7 @@
               var min = Math.floor(value / 60);
               var sec = Math.floor(value) % 60;
               if (sec < 10) {
-                return "" + min + ":0" + sec;  
+                return "" + min + ":0" + sec;
               }
               return "" + min + ":" + sec;
             }
