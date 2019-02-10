@@ -2,7 +2,9 @@ import os
 import requests
 import spotipy
 import json
+from flaskr.auth import login_required
 from flask import Flask, render_template, request, session
+from requests.exceptions import SSLError
 
 
 def create_app(test_config=None):
@@ -30,18 +32,20 @@ def create_app(test_config=None):
     @app.route('/')
     def home():
         if 'display_name' in session:
-            print("display name")
             return render_template('index.html', name=session['display_name'])
-        print('session: %s' % session)
         return render_template('index.html')
 
     # search results screen
     @app.route('/search_results')
+    @login_required
     def search_results():
         if 'display_name' in session and 'token' in session:
             spotify = spotipy.Spotify(auth=session['token'])
-            results = spotify.search(request.args.get('search_query'))
-            tracks = results['tracks']['items']
+            try:
+                results = spotify.search(request.args.get('search_query'))
+                tracks = results['tracks']['items']
+            except SSLError as err:
+                flash("Connection error - please try again.")
             return render_template('search_results.html', name=session['display_name'], tracks=tracks)
         else:
             return render_template('index.html')
