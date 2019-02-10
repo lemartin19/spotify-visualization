@@ -4,7 +4,7 @@ import functools
 from flask import (
     Blueprint, flash, redirect, render_template, request, session, url_for, app
 )
-from requests.exceptions import SSLError, ConnectionError, RequestException
+from requests.exceptions import SSLError
 import spotipy
 from spotipy import oauth2
 
@@ -43,12 +43,14 @@ def callback():
     token = SP_OAUTH.get_access_token(code)
     if token:
         session['token'] = token['access_token']
+        session['refresh'] = token['refresh_token']
         sp = spotipy.Spotify(auth=session['token'])
         try:
             cu = sp.current_user()
             session['display_name'] = cu['display_name']
-        except RequestException as e:
-            flash("Error logging in, please try again.")
+        except SSLError as e:
+            # flash("Connection error")
+            return redirect(url_for('home'))
     else:
         flash("Cannot get access token")
     return redirect(url_for('home'))
@@ -62,3 +64,24 @@ def logout():
     '''
     session.clear()
     return redirect(url_for('home'))
+
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+
+        if 'refresh' in session:
+            refresh = SP_OAUTH.refresh_access_token(session['refresh'])
+            session['token'] = refresh['access_token']
+            session['refresh'] = refresh['refresh_token']
+            sp = spotipy.Spotify(auth=session['token'])
+            try:
+                cu = sp.current_user()
+                session['display_name'] = cu['display_name']
+            except SSLError:
+                # flash("Connection error - please try again.")
+                return redirect(url_for('home'))
+            return view(**kwargs)
+        else:
+            return redirect(url_for('home'))
+
+    return wrapped_view

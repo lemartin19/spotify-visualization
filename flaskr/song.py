@@ -1,8 +1,9 @@
 import  spotipy
+from flaskr.auth import login_required
 from flask import (
-    Blueprint, redirect, render_template, request, session, url_for, app, flash
+    Blueprint, redirect, render_template, request, session, url_for, flash
 )
-from requests.exceptions import SSLError, RequestException
+from requests.exceptions import SSLError
 
 bp = Blueprint('song', __name__, url_prefix='/')
 
@@ -16,6 +17,6 @@ def song():
         track = sp.track(id)
         return render_template('song.html', name=session['display_name'], track=track,
             features=features[0], analysis=analysis)
-    except RequestException as err:
-        flash("Connection error")
-    return redirect(url_for('song.song', id=id))
+    except SSLError as err:
+        # flash("Connection error")
+        return redirect(url_for('song.song', id=id))

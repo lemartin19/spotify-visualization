@@ -15,10 +15,17 @@
   </h3>
   <div>
     {% set keys = ['No key', 'C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'G#', 'A', 'Bb', 'B'] %}
-    <h4 style="color: #f8f8f8">Key: <small>{{keys[features.key + 1]}}</small></h4>
-    <h4 style="color: #f8f8f8">Mode: <small>{% if features.mode %}Major{% else %}Minor{% endif %}</small></h4>
-    <h4 style="color: #f8f8f8">Meter: <small>{{features.time_signature}}</small></h4>
-    <h4 style="color: #f8f8f8">Tempo: <small>{{features.tempo}}</small></h4>
+    <div class="row text-center">
+      <div class="col-4">
+        <h4 style="color: #f8f8f8">Key: <small>{{keys[features.key + 1]}} {% if features.mode %}Major{% else %}Minor{% endif %}</small></h4>
+      </div>
+      <div class="col-4">
+        <h4 style="color: #f8f8f8">Meter: <small>{{features.time_signature}} / 4</small></h4>
+      </div>
+      <div class="col-4">
+        <h4 style="color: #f8f8f8">Tempo: <small>{{features.tempo}} BPM</small></h4>
+      </div>
+    </div>
   </div>
 
   <div class="chartjs-size-monitor">
@@ -31,41 +38,43 @@
 </div>
 
 <script>
-  // Audio analysis
-	var line_config = {
-		type: 'line',
-		data: {
-      labels: [
+  var line_data = {
+    labels: [
+      {% for section in analysis.sections %}
+        {{section.start}},
+      {% endfor %}
+    ],
+    datasets: [{
+      label: 'Loudness',
+      backgroundColor: '#007bff88',
+      borderColor: '#007bff',
+      data: [
+        {% with loudness_max = analysis.sections|map(attribute='loudness')|max %}
         {% for section in analysis.sections %}
-        {{section.start + section.duration / 2}}{% if not loop.last %}, {% endif %}
-        {% endfor %}
-      ],
-			datasets: [{
-        label: 'Loudness',
-				backgroundColor: '#007bff88',
-				borderColor: '#007bff',
-				data: [
-          {% with loudness_max = analysis.sections|map(attribute='loudness')|max %}
-          {% for section in analysis.sections %}
           {{loudness_max / section.loudness}}{% if not loop.last %}, {% endif %}
-          {% endfor %}
-          {% endwith %}
-				],
-				fill: false,
-			}, {
-        label: 'Tempo',
-				backgroundColor: '#ffff3388',
-				borderColor: '#ffff33',
-				data: [
-          {% with tempo_max = analysis.sections|map(attribute='tempo')|max %}
-          {% for section in analysis.sections %}
-          {{section.tempo / tempo_max }}{% if not loop.last %}, {% endif %}
-          {% endfor %}
-          {% endwith %}
-				],
-				fill: false,
-			}]
-		},
+        {% endfor %}
+        {% endwith %}
+      ],
+      fill: false,
+      yAxisID: 'y-axis-0'
+    }, {
+      label: 'Tempo',
+      backgroundColor: '#ffff3388',
+      borderColor: '#ffff33',
+      data: [
+        {% with tempo_max = analysis.sections|map(attribute='tempo')|max %}
+        {% for section in analysis.sections %}
+        {{section.tempo / tempo_max }}{% if not loop.last %}, {% endif %}
+        {% endfor %}
+        {% endwith %}
+      ],
+      fill: false,
+    }]
+  };
+
+  var line_config = {
+		type: 'line',
+		data: line_data,
 		options: {
 			scales: {
 				xAxes: [{
@@ -82,11 +91,10 @@
 					}
 				}]
 			}
-		}
+    }
 	};
 
   // Feature graph
-  var color = Chart.helpers.color;
   var radar_config = {
   	type: 'radar',
   	data: {
@@ -100,13 +108,13 @@
   	  datasets: [{
   			backgroundColor: '#1DB95488',
   			borderColor: '#1DB954',
-  			data: [{{features.danceability}},
-               {{features.energy}},
-               {{features.acousticness}},
-               {{features.instrumentalness}},
-               {{features.liveness}},
-               {{features.valence}},
-               {{features.speechiness}}]
+  			data: [{{features.danceability * 100}},
+               {{features.energy * 100}},
+               {{features.acousticness * 100}},
+               {{features.instrumentalness * 100}},
+               {{features.liveness * 100}},
+               {{features.valence * 100}},
+               {{features.speechiness * 100}}]
   		}]
   	},
   	options: {
@@ -125,6 +133,7 @@
         gridLines: {display: true,
                     color: '#444444'},
   			ticks: {beginAtZero: true,
+                max: 100.0,
                 fontSize: 18,
                 color: '#888888',
                 showLabelBackdrop: false},
@@ -135,8 +144,8 @@
   };
 
   window.onload = function() {
-    var line_chart = new Chart(document.getElementById('analysis').getContext('2d'), line_config);
-  	var radar_char = new Chart(document.getElementById('features'), radar_config);
+    window.myAnalysis = new Chart(document.getElementById('analysis').getContext('2d'), line_config);
+  	window.myFeatures = new Chart(document.getElementById('features'), radar_config);
   };
 </script>
 

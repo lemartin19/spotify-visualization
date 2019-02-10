@@ -13,10 +13,9 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/0.5.5/chartjs-plugin-annotation.js"></script>
+    <script src="https://cdn.rawgit.com/chartjs/Chart.js/master/samples/utils.js"></script>
   </head>
 
   <body>
@@ -34,13 +33,18 @@
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">login <i class="fas fa-user"></i></button>
         </form>
         {% endif %}
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <li class="nav-item"><a class="nav-link disabled">{{ messages[0] }}</a></li>
-        {% endif %}
-        {% endwith %}
       </ul>
+        </ul>
+      </div>
     </nav>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="alert alert-danger" role="alert">
+        Error: {{messages[0]}}
+      </div>
+    {% endif %}
+    {% endwith %}
 
     {% block content %}{% endblock %}
 

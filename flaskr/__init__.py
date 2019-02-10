@@ -2,7 +2,7 @@ import os
 import requests
 import spotipy
 import json
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, flash, redirect, url_for
 from requests.exceptions import SSLError
 
 
@@ -31,9 +31,7 @@ def create_app(test_config=None):
     @app.route('/')
     def home():
         if 'display_name' in session:
-            print("display name")
             return render_template('index.html', name=session['display_name'])
-        print('session: %s' % session)
         return render_template('index.html')
 
     # search results screen
@@ -47,10 +45,10 @@ def create_app(test_config=None):
                 tracks = results['tracks']['items']
                 return render_template('search_results.html', name=session['display_name'], tracks=tracks)
             except SSLError as err:
-                flash("Connection error")
-                redirect(url_for('search_results', search_query=query))
+                # flash("Connection error")
+                return redirect(url_for('search_results', search_query=query))
         else:
-            return render_template('index.html')
+            return redirect(url_for('home'))
 
     from . import auth
     app.register_blueprint(auth.bp)
