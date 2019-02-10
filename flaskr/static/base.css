@@ -27,3 +27,39 @@ h2 {
 .bg-dark {
   background: #191616 !important;
 }
+
+.card-title {
+  color: #020100;
+}
+
+.card-text {
+  color: #020100;
+}
+
+.my-btn:hover, .my-btn:focus, .my-btn:active, .my-btn:active:focus,
+.my-btn.active, .open>.dropdown-toggle.my-btn {
+  color: #020100 !important;
+  background-color: #FFAC9C !important;
+  border-color: #020100 !important;
+}
+
+.btn-outline-success {
+  color: #1DB954;
+  border-color: #1DB954;
+}
+
+.btn-outline-success:hover, .btn-outline-success:focus, .btn-outline-success:active,
+.btn-outline-success:active:focus,.btn-outline-success.active,
+.open>.dropdown-toggle.btn-outline-success {
+  color: #020100 !important;
+  background-color: #1DB954;
+  border-color: #1DB954;
+}
+
+.my-sch-again-btn:hover, .my-sch-again-btn:focus, .my-sch-again-btn:active,
+.my-sch-again-btn:active:focus,.my-sch-again-btn.active,
+.open>.dropdown-toggle.my-sch-again-btn {
+  color: #FDFEFF !important;
+  background-color: #FFAC9C !important;
+  border-color: #FFDCCC !important;
+}
