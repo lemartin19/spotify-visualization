@@ -3,6 +3,7 @@ import requests
 import spotipy
 import json
 from flask import Flask, render_template, request, session
+from requests.exceptions import SSLError
 
 
 def create_app(test_config=None):
@@ -40,9 +41,14 @@ def create_app(test_config=None):
     def search_results():
         if 'display_name' in session and 'token' in session:
             spotify = spotipy.Spotify(auth=session['token'])
-            results = spotify.search(request.args.get('search_query'))
-            tracks = results['tracks']['items']
-            return render_template('search_results.html', name=session['display_name'], tracks=tracks)
+            try:
+                query = request.args.get('search_query')
+                results = spotify.search(query)
+                tracks = results['tracks']['items']
+                return render_template('search_results.html', name=session['display_name'], tracks=tracks)
+            except SSLError as err:
+                flash("Connection error")
+                redirect(url_for('search_results', search_query=query))
         else:
             return render_template('index.html')
 
