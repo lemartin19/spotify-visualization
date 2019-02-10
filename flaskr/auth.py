@@ -25,8 +25,12 @@ def login():
     : PARAMS None
     : RETURN <view>
     '''
-    session.clear()
-    return redirect(SP_OAUTH.get_authorize_url())
+    try:
+        session.clear()
+        return redirect(SP_OAUTH.get_authorize_url())
+    except ConnectionError as e:
+        flash("Connection error")
+
 
 @bp.route('/callback/')
 def callback():
