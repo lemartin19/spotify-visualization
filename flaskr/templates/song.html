@@ -31,7 +31,7 @@
     </div>
   </div>
 
-  <div class="">
+  <div class="chartjs-size-monitor">
     <canvas id="analysis" class="chartjs-render-monitor"></canvas>
   </div>
 
@@ -104,7 +104,17 @@
 					scaleLabel: {
             display: true,
             labelString: 'Time'},
-          xAxisID: 'x-axis-0'
+          xAxisID: 'x-axis-0',
+          ticks: {
+            callback: function(value, index, values) {
+              var min = Math.floor(value / 60);
+              var sec = Math.floor(value) % 60;
+              if (sec < 10) {
+                return "" + min + ":0" + sec;  
+              }
+              return "" + min + ":" + sec;
+            }
+          }
 				}],
 				yAxes: [{
 					display: true,
