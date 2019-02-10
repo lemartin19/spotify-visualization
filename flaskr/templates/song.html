@@ -44,7 +44,7 @@
   var line_data = {
     labels: [
       {% for section in analysis.sections %}
-        {{section.start|round(0, 'floor')}}, 
+        {{section.start|round(0, 'floor')}},
       {% endfor %}
     ],
     datasets: [{
@@ -62,8 +62,8 @@
       yAxisID: 'y-axis-0'
     }, {
       label: 'Tempo',
-      backgroundColor: '#DAF7A688',
-      borderColor: '#DAF7A6',
+      backgroundColor: '#CAF78688',
+      borderColor: '#CAF786',
       data: [
         {% with tempo_max = analysis.sections|map(attribute='tempo')|max %}
         {% for section in analysis.sections %}
