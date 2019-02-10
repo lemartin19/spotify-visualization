@@ -45,9 +45,9 @@
 				backgroundColor: '#007bff88',
 				borderColor: '#007bff',
 				data: [
-          {% with loudness_min = analysis.sections|map(attribute='loudness')|min %}
+          {% with loudness_max = analysis.sections|map(attribute='loudness')|max %}
           {% for section in analysis.sections %}
-          {{section.loudness / loudness_min}}{% if not loop.last %}, {% endif %}
+          {{loudness_max / section.loudness}}{% if not loop.last %}, {% endif %}
           {% endfor %}
           {% endwith %}
 				],
@@ -95,7 +95,6 @@
                'Acousticness',
                'Instrumentalness',
                'Liveness',
-               'Loudness',
                'Valence',
                'Speechiness'],
   	  datasets: [{
@@ -106,7 +105,6 @@
                {{features.acousticness}},
                {{features.instrumentalness}},
                {{features.liveness}},
-               {{features.loudness / -60}},
                {{features.valence}},
                {{features.speechiness}}]
   		}]

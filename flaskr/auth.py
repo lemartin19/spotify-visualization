@@ -4,7 +4,7 @@ import functools
 from flask import (
     Blueprint, flash, redirect, render_template, request, session, url_for, app
 )
-from requests.exceptions import SSLError
+from requests.exceptions import SSLError, ConnectionError, RequestException
 import spotipy
 from spotipy import oauth2
 
@@ -25,8 +25,12 @@ def login():
     : PARAMS None
     : RETURN <view>
     '''
-    session.clear()
-    return redirect(SP_OAUTH.get_authorize_url())
+    try:
+        session.clear()
+        return redirect(SP_OAUTH.get_authorize_url())
+    except ConnectionError as e:
+        flash("Connection error")
+
 
 @bp.route('/callback/')
 def callback():
@@ -43,8 +47,8 @@ def callback():
         try:
             cu = sp.current_user()
             session['display_name'] = cu['display_name']
-        except SSLError as e:
-            flash("Connection error")
+        except RequestException as e:
+            flash("Error logging in, please try again.")
     else:
         flash("Cannot get access token")
     return redirect(url_for('home'))
