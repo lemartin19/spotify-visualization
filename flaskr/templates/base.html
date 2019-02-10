@@ -23,21 +23,29 @@
   <body>
     <!-- Navigation -->
     <nav class ="header navbar navbar-dark navbar-expand-lg fixed-top bg-dark">
-      <a class="navbar-brand" href="{{ url_for('home') }}">Home</a>
-      <div class="collapse navbar-collapse">
-        <ul class="navbar-nav">
+      <a class="navbar-brand mr-auto" href="{{ url_for('home') }}">aesthetify</a>
+      <ul class="navbar-nav ml-auto">
         {% if name %}
-          <li class="nav-item"><a class="nav-link disabled">{{ name }}</a></li>
-          <form action="{{ url_for('auth.logout') }}">
-            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Logout <i class="fas fa-user"></i></button>
-          </form>
+        <li class="nav-item"><a class="nav-link disabled">{{ name }}</a></li>
+        <form action="{{ url_for('auth.logout') }}">
+          <button class="btn btn-outline-light my-2 my-sm-0" type="submit">logout <i class="fas fa-user"></i></button>
+        </form>
         {% else %}
-          <form action="{{ url_for('auth.login') }}">
-            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Login <i class="fas fa-user"></i></button>
-          </form>
+        <form action="{{ url_for('auth.login') }}">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">login <i class="fas fa-user"></i></button>
+        </form>
         {% endif %}
+<<<<<<< HEAD
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <li class="nav-item"><a class="nav-link disabled">{{ messages[0] }}</a></li>
+        {% endif %}
+        {% endwith %}
+      </ul>
+=======
         </ul>
       </div>
+>>>>>>> master
     </nav>
 
     {% with messages = get_flashed_messages() %}
