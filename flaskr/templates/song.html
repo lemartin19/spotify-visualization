@@ -41,59 +41,95 @@
 </div>
 
 <script>
-  var line_data = {
-    labels: [
-      {% for section in analysis.sections %}
-        {{section.start|round(0, 'floor')}}, 
-      {% endfor %}
-    ],
-    datasets: [{
-      label: 'Loudness',
-      backgroundColor: '#19D7A588',
-      borderColor: '#19D7A5',
-      data: [
-        {% with loudness_max = analysis.sections|map(attribute='loudness')|max %}
-        {% for section in analysis.sections %}
-          {{loudness_max / section.loudness}}{% if not loop.last %}, {% endif %}
-        {% endfor %}
-        {% endwith %}
-      ],
-      fill: false,
-      yAxisID: 'y-axis-0'
-    }, {
-      label: 'Tempo',
-      backgroundColor: '#DAF7A688',
-      borderColor: '#DAF7A6',
-      data: [
-        {% with tempo_max = analysis.sections|map(attribute='tempo')|max %}
-        {% for section in analysis.sections %}
-        {{section.tempo / tempo_max }}{% if not loop.last %}, {% endif %}
-        {% endfor %}
-        {% endwith %}
-      ],
-      fill: false,
-    }]
-  };
-
   var line_config = {
-		type: 'line',
-		data: line_data,
+    data: {
+      type: 'line',
+      responsive: true,
+      labels: [
+        {% for section in analysis.sections %}
+          {{section.start}},
+          {% if loop.last %}{{section.start + section.duration}}{% endif %}
+        {% endfor %}],
+      datasets: [{
+        type: 'line',
+        label: 'Loudness',
+        xAxisID: 'x-axis-0',
+        yAxisID: 'y-axis-0',
+        backgroundColor: '#007bff88',
+        borderColor: '#007bff',
+        data: [
+          {% with loudness_max = analysis.sections|map(attribute='loudness')|max %}
+          {% for section in analysis.sections %}
+            {{loudness_max / section.loudness}}{% if not loop.last %}, {% endif %}
+          {% endfor %}
+          {% endwith %}
+        ],
+        fill: false
+      }, {
+        type: 'line',
+        label: 'Tempo',
+        xAxisID: 'x-axis-0',
+        yAxisID: 'y-axis-0',
+        backgroundColor: '#ffff3388',
+        borderColor: '#ffff33',
+        data: [
+          {% with tempo_max = analysis.sections|map(attribute='tempo')|max %}
+          {% for section in analysis.sections %}
+          {{section.tempo / tempo_max }}{% if not loop.last %}, {% endif %}
+          {% endfor %}
+          {% endwith %}
+        ],
+        fill: false
+      }, {
+        type: 'line',
+        label: 'Key',
+        backgroundColor: '#1DB95488',
+        borderColor: '#1DB954',
+        borderWidth: 8,
+        xAxisID: 'x-axis-0',
+        yAxisID: 'y-axis-1',
+        data: [
+          {% for section in analysis.sections %}
+            {x: {{section.start}}, y: {{section.key}}}
+            {% if not loop.last %}, {% endif %}
+          {% endfor %}
+        ],
+        showLine: false,
+        fill: false
+      }]},
 		options: {
 			scales: {
 				xAxes: [{
-          type: 'category',
 					display: true,
 					scaleLabel: {
             display: true,
-            labelString: 'Time (seconds)'}
+            labelString: 'Time'},
+          xAxisID: 'x-axis-0'
 				}],
 				yAxes: [{
 					display: true,
 					scaleLabel: {
 						display: true,
-						labelString: 'Value (proportion of max)'
-					}
-				}]
+						labelString: 'Value'},
+          yAxisID: 'y-axis-0',
+          position: 'left'
+				}, {
+  				display: true,
+          ticks: {
+            min: -1,
+            max: 12,
+            stepSize: 1,
+            callback: function(value, index, values) {
+              var keys = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "G#", "A", "Bb", "B"];
+              return keys[value];
+            }
+          },
+  				scaleLabel: {
+            display: true,
+            labelString: 'Key'},
+          xAxisID: 'y-axis-1',
+          position: 'right'
+        }]
 			}
     }
 	};
@@ -112,13 +148,13 @@
   	  datasets: [{
   			backgroundColor: '#FF645488',
   			borderColor: '#FF6454',
-  			data: [{{features.danceability * 100}},
-               {{features.energy * 100}},
-               {{features.acousticness * 100}},
-               {{features.instrumentalness * 100}},
-               {{features.liveness * 100}},
-               {{features.valence * 100}},
-               {{features.speechiness * 100}}]
+  			data: [{{features.danceability}},
+               {{features.energy}},
+               {{features.acousticness}},
+               {{features.instrumentalness}},
+               {{features.liveness}},
+               {{features.valence}},
+               {{features.speechiness}}]
   		}]
   	},
   	options: {
@@ -137,8 +173,8 @@
         gridLines: {display: true,
                     color: '#444444'},
   			ticks: {beginAtZero: true,
-                max: 100.0,
-                fontSize: 14,
+                max: 1.0,
+                fontSize: 18,
                 color: '#888888',
                 showLabelBackdrop: false},
         pointLabels: {fontSize: 22,
