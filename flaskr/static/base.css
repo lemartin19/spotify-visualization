@@ -63,3 +63,50 @@ h2 {
   background-color: #FFAC9C !important;
   border-color: #FFDCCC !important;
 }
+
+.aestheme-red {
+  color: #FF5242 !important;
+}
+
+.aestheme-orange {
+  color: #FF772F !important;
+}
+
+.aestheme-yellow {
+  color: #FFDF2F !important;
+}
+
+.aestheme-lime {
+  color: #B7FF2F !important;
+}
+
+.aestheme-green {
+  color: #22BA4D !important;
+}
+
+.aestheme-mint {
+  color: #10EA88 !important;
+}
+
+.aestheme-teal {
+  color: #2FFFBD !important;
+}
+
+.aestheme-azure {
+  color: #2FD9FF !important;
+}
+
+.aestheme-blue {
+  color: #2F71FF !important;
+}
+
+.aestheme-indigo {
+  color: #5100FF !important;
+}
+
+.teal-hover-btn:hover, .teal-hover-btn:focus, .teal-hover-btn:active,
+.teal-hover-btn:active:focus,.teal-hover-btn.active, .open>.dropdown-toggle.teal-hover-btn {
+  color: #020100 !important;
+  background-color: #2FFFBD !important;
+  border-color: #020100 !important;
+}
